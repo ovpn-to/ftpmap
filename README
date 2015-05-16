@@ -40,7 +40,7 @@ If a named host has several IP addresses, they are all sequentially scanned.
 During the scan, ftpmap displays a list of numbers : this is the
 "fingerprint" of the server. If the server software isn't properly
 recognized, and you know what it is, please send the fingerprint and the
-name of the software to ftpmap@pureftpd.org .
+name of the software to hypsurus@mail.ru.
 
 Another indication that can be displayed if login was successful is the FTP
 PORT sequence prediction. If the difficulty is too low, it means that anyone
@@ -48,7 +48,6 @@ can steal your files and change their content, even without knowing your
 password or sniffing your network.
 
 There are very few known fingerprints yet, but submissions are welcome.
-You can send the fingerprints to hypsurus@mail.ru
 
   ------------------------ Obfuscating FTP servers ------------------------
 
