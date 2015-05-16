@@ -1,6 +1,8 @@
-/* (C)opyleft 2001-2002 by Jedi/Sector One <j@4u.net> */
+
+/* ftpmap.h - the FTP-Map project header */
 
 #include <stdio.h>
+
 #ifdef STDC_HEADERS
 # include <stdlib.h>
 # include <stddef.h>
@@ -10,6 +12,7 @@
 #  include <stdlib.h>
 # endif
 #endif
+
 #if HAVE_STRING_H
 # if !STDC_HEADERS && HAVE_MEMORY_H
 #  include <memory.h>
@@ -23,13 +26,17 @@
 #if HAVE_INTTYPES_H
 # include <inttypes.h>
 #endif
+
+#include <time.h>
 #include <limits.h>
 #include <errno.h>
 #include <ctype.h>
 #include <signal.h>
+
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #ifdef HAVE_FCNTL_H
@@ -37,15 +44,18 @@
 #elif defined(HAVE_SYS_FCNTL_H)
 # include <sys/fcntl.h>
 #endif
+
 #ifdef HAVE_IOCTL_H
 # include <ioctl.h>
 #elif defined(HAVE_SYS_IOCTL_H)
 # include <sys/ioctl.h>
 #endif
+
 #include <sys/socket.h>
 #ifdef HAVE_NETINET_IN_SYSTM_H
 # include <netinet/in_systm.h>
 #endif
+
 #include <netinet/in.h>
 #include <netinet/ip.h>
 #include <netinet/tcp.h>
@@ -56,6 +66,7 @@
 # ifdef HAVE_ALLOCA_H
 #  include <alloca.h>
 # endif
+
 # define ALLOCA(X) alloca(X)
 # define ALLOCA_FREE(X) do { } while (0)
 #else
@@ -127,8 +138,33 @@ extern int errno;
 # define _exit(X) exit(X)
 #endif
 
-#define FTP_ANSWER_MAX 424242U
-#define FTP_CRLF "\r\n"
-#define FTP_DEFAULT_PORT "21"
-#define FTP_DEFAULT_USER "ftp"
-#define FTP_DEFAULT_PASS "mickey@disneyland.com"
+#define MAX_STR 256
+#define MAX_ANSWER  1024
+#define FTP_CRLF    "\x0a\x0d"
+#define FTP_DEFAULT_SERVER  "localhost"
+#define FTP_DEFAULT_PORT    "21"
+#define FTP_DEFAULT_USER    "Anonymous"
+#define FTP_DEFAULT_PASSWORD    "hello@world"
+
+int fd;
+
+typedef struct {
+    FILE *fid;
+    char ip_addr[MAX_STR];
+    char software[MAX_STR];
+    char sversion[MAX_STR];
+    char fingerprint_software[MAX_STR];
+    char *answer;
+    char *server;
+    char *port;
+    char *user;
+    char *password;
+ } ftpmap_t;
+
+void ftpmap_detect_version_by_banner(ftpmap_t*);
+void ftpmap_init(ftpmap_t*);
+void ftpmap_reconnect(ftpmap_t*, int);
+void print_usage(int);
+void print_version(int);
+void sigalrm(int);
+

@@ -1,3 +1,6 @@
+
+/* testcmds.c - FTP cmd list */
+
 static const char *testcmds[] = {
         "ABOR" FTP_CRLF,
         "NOOP" FTP_CRLF,

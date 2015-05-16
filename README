@@ -9,7 +9,8 @@
 Ftpmap scans remote FTP servers to indentify what software and what versions
 they are running. It uses program-specific fingerprints to discover the name
 of the software even when banners have been changed or removed, or when some
-features have been disabled. IPv6 is fully supported.
+features have been disabled. also FTP-Map can detect Vulnerables by the  FTP 
+software/version.
 
 
         ------------------------ COMPILATION ------------------------
@@ -26,24 +27,13 @@ make install
 Using ftpmap is trivial, and the built-in help is self-explanatory :
 
 
-Usage : ftpmap [-h] [-P <port>] [-u <login>] [-p <pass>] -s <host>
-
--h         : help
--P <port>  : connect to port <port> (default=21)
--u <login> : login to the server as <login> (default=ftp)
--p <pass>  : use this password (default=mickey@disneyland.com)
--s <host>  : connect to FTP server running on <host> (IP or name)
-
-
 Examples :
 
-/usr/local/bin/ftpmap -s ftp.c9x.org
+ftpmap -s ftp.c9x.org
 
-/usr/local/bin/ftpmap -s ::1
+ftpmap -P 2121 -s 127.0.0.1
 
-/usr/local/bin/ftpmap -P 2121 -s 127.0.0.1
-
-/usr/local/bin/ftpmap -u joe -p joepass -s ftp3.c9x.org
+ftpmap -u joe -p joepass -s ftp3.c9x.org
 
 
 If a named host has several IP addresses, they are all sequentially scanned.
@@ -58,7 +48,7 @@ can steal your files and change their content, even without knowing your
 password or sniffing your network.
 
 There are very few known fingerprints yet, but submissions are welcome.
-
+You can send the fingerprints to hypsurus@mail.ru
 
   ------------------------ Obfuscating FTP servers ------------------------
 
@@ -83,11 +73,12 @@ up to date : subscribe to mailing lists and apply vendor patches.
 
     ------------------------ Downloading Ftpmap ------------------------
 
-
-Ftpmap primary download location is :
-
-ftp://ftp.fr.pureftpd.org/pure-ftpd/ftpmap/
+                git clone git://github.com/Hypsurus/ftpmap 
 
 
 
-               -Frank DENIS <j@pureftpd.org>.
+        -------------------- Notes ----------------------------
+
+All of this Document Written by Frank DENIS <j@pureftpd.org>. The Original Author of FTP-map.
+FTP-Map Maintainer: Hypsurus <hypsurus@mail.ru.
+You can see the diff 0.4-0.5 be Review in github.
