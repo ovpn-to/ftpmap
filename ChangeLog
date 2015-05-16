@@ -1,0 +1,11 @@
+* Version 0.1 :
+        Initial release.
+    
+* Version 0.2 :
+        Reconnect when the connection has been dropped.
+        Find PORT sequence numbers.
+    
+* Version 0.3 :    
+        Debug mode (-d)
+        Resend username/password when reconnecting.
+    

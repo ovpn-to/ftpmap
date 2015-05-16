@@ -1,0 +1,17 @@
+- Version 0.1 :
+        Initial release.
+
+- Version 0.2 :
+        New fingerprints.
+        Keep scanning even when the server closed the connection.
+        Display 3 hypothesis.
+        Evaluate vulnerability level to PASV port prediction attacks.
+
+- Version 0.3 :
+        More accurate fingerprints.
+
+- Version 0.4 :
+        Check for ESTP/ESTA.
+        Don't give up when a command times out.
+        More fingerprints.
+
