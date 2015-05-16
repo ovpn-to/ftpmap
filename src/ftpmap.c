@@ -38,7 +38,7 @@ void die(int stat, char *format, ...) {
         va_end(li);
 
         if ( stat == 1 ) {
-            fprintf(stderr, "[ftpmap] Oh No! %s\n", m);
+            fprintf(stderr, "[ERROR] Oh No! %s\n", m);
             exit(EXIT_FAILURE);
         }
 
@@ -113,7 +113,7 @@ void ftpmap_detect_version_by_banner(ftpmap_t *ftpmap) {
     char v[MAX_STR];
     
     sprintf(v, "%s%s", ftpmap->software, ftpmap->sversion);
-    printf("\t** Trying to detect FTP server by banner...\n");
+    printf("\t[INFO] Trying to detect FTP server by banner...\n");
 
     if (( fp = fopen("../db/ftp-versions-db", "r")) == NULL )
         die(1, "Failed to open ftp-versions-db file, The file exists?");
@@ -121,7 +121,7 @@ void ftpmap_detect_version_by_banner(ftpmap_t *ftpmap) {
     while (( fgets(vv, sizeof(vv), fp)) != NULL ) {
         strtok(vv, "\n");
         if (strcasecmp(vv, v) == 0) {
-            printf("\t=> Found FTP Version: %s\n", vv);
+            printf("\t[*] Found FTP Version: %s\n", vv);
             break;
         }
     }
@@ -132,7 +132,7 @@ int ftpmap_login(ftpmap_t *ftpmap) {
 
     print_startup(ftpmap);
     ftpmap->answer = ftpmap_getanswer(ftpmap);
-    printf("\t=> FTP Banner: %s", ftpmap->answer);
+    printf("\t[*] FTP Banner: %s", ftpmap->answer);
 
     sscanf(ftpmap->answer, "220 %s %s", ftpmap->software, ftpmap->sversion);
 
@@ -152,11 +152,11 @@ int ftpmap_login(ftpmap_t *ftpmap) {
         ftpmap_reconnect(ftpmap, 0);
 
     if ( *ftpmap->answer == '2' ) {
-        printf("\t=> FTP Anonymous login Allowed !\n");
+        printf("\t[+} FTP Anonymous login Allowed !\n");
         return 0;
     }
 
-    printf("\t** FTP Anonymous login NOT Allowed !\n");
+    printf("\t[*] FTP Anonymous login NOT Allowed !\n");
     return -1;
 }
 
@@ -172,7 +172,7 @@ void ftpmap_findexploit(ftpmap_t *ftpmap) {
     if (( fp = fopen("../db/ftp-exploit-db", "r")) == NULL )
         die(1, "Failed to open the ftp-exploit-db file.");
 
-    printf("\n\t** Searching explolits...\n");
+    printf("\n\t[*] Searching explolits...\n");
     while (( fgets(line, sizeof(line), fp)) != NULL ) {
         sscanf(line, "%d,%[^\n]s", &id, &exploit);
         if ( strcasestr(exploit, ftpmap->software) && strstr(exploit, ftpmap->sversion)) {
@@ -189,7 +189,7 @@ void ftpmap_findexploit(ftpmap_t *ftpmap) {
     }
 
     if ( exploit_counter == 0 )
-        printf("\t** FTP-Map didn't find any exploits in exploit-db.com\n");
+        printf("\t[INFO] FTP-Map didn't find any exploits in exploit-db.com\n");
 }
 
 int ftpmap_updatestats(const unsigned long sum, int testnb) {
@@ -238,7 +238,7 @@ int ftpmap_findseq(ftpmap_t *ftpmap) {
         answer = ftpmap_getanswer(ftpmap);
         if (*answer != '2') {
             noseq:                        
-            printf("\t** Unable to determine FTP port sequence numbers\n");
+            printf("\t[INFO] Unable to determine FTP port sequence numbers\n");
             return -1;
         }
         while (*answer != 0 && *answer != '(') {
@@ -254,7 +254,7 @@ int ftpmap_findseq(ftpmap_t *ftpmap) {
         port[n] = e * 256U + f;
         n++;
     } while (n < (sizeof port / sizeof port[0]));
-    printf("\t** FTP port sequence numbers : ");
+    printf("\t[*] FTP port sequence numbers : ");
     n = 0;
     do {
         printf("%u ", port[n]);
@@ -303,7 +303,7 @@ int ftpmap_findwinner(ftpmap_t *ftpmap) {
     double maxerr;
     const char *olds = NULL;
 
-    printf("\t** This may be running :\n");
+    printf("\t[INFO] This may be running :\n");
     qsort(fingerprints, sizeof fingerprints / sizeof fingerprints[0],
           sizeof fingerprints[0], ftpmap_compar);
     maxerr = (double) fingerprints[nb - 1].err;
@@ -351,7 +351,7 @@ int ftpmap_fingerprint(ftpmap_t *ftpmap) {
     if (( fp = fopen(filename, "w+")) == NULL )
         die(1, "Failed to write fingerprint log file.");
 
-    printf("\t** Trying to detect FTP server by fingerprint...\n");
+    printf("\t[INFO] Trying to detect FTP server by fingerprint...\n");
     cmd = testcmds;
     max = 141;
 
@@ -367,7 +367,7 @@ int ftpmap_fingerprint(ftpmap_t *ftpmap) {
             sum = ftpmap_checksum(answer);
         }
 
-        printf("\t=> Generating fingerprint [%d%%]\r", progress * 100 / max );
+        printf("\t[INFO] Generating fingerprint [%d%%]\r", progress * 100 / max );
         fprintf(fp, "%lu,", sum);
         fflush(stdout);
         ftpmap_updatestats(sum, testnb);
@@ -375,7 +375,7 @@ int ftpmap_fingerprint(ftpmap_t *ftpmap) {
         cmd++;
         progress++;
     }
-    printf("\t** Fingerprint saved: %s\n", filename);
+    printf("\t[*] Fingerprint saved: %s\n", filename);
     fclose(fp);
     putchar(0x0a);
     return 0;
@@ -456,8 +456,8 @@ int main(int argc, char **argv) {
     ftpmap_findwinner(ftpmap);
     ftpmap_findseq(ftpmap);
     ftpmap_findexploit(ftpmap);
-    
-    printf("\n\t..:: Scan complete ::..\n");
+
+    printf("\nPlease send the fingerprint to hypsurus@mail.ru to improve FTP-Map.\n");
     fclose(ftpmap->fid);
     free(ftpmap);
     
