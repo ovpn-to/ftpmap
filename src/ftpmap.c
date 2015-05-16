@@ -177,12 +177,12 @@ void ftpmap_findexploit(ftpmap_t *ftpmap) {
         sscanf(line, "%d,%[^\n]s", &id, &exploit);
         if ( strcasestr(exploit, ftpmap->software) && strstr(exploit, ftpmap->sversion)) {
             printf("\t[+] Exploit: %s\n"
-                    "\t[*] Download: http://exploit-db.com/download/%d\n\n", exploit, id);
+                    "\t[*] Download: http://exploit-db.com/download/%d\n", exploit, id);
             exploit_counter++;
         }
         else if ( strcasestr(exploit, fsoftware) && strstr(exploit, fsversion)) {
-            printf("\n\n\t[+] Exploit: %s\n"
-                   "\t[*] Download: http://exploit-db.com/download/%d\n\n", exploit, id);
+            printf("\t[+] Exploit: %s\n"
+                   "\t[*] Download: http://exploit-db.com/download/%d\n", exploit, id);
             exploit_counter++;
 
         }
@@ -456,7 +456,8 @@ int main(int argc, char **argv) {
     ftpmap_findwinner(ftpmap);
     ftpmap_findseq(ftpmap);
     ftpmap_findexploit(ftpmap);
-
+    
+    printf("\n\t..:: Scan complete ::..\n");
     fclose(ftpmap->fid);
     free(ftpmap);
     
